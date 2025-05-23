@@ -1,24 +1,30 @@
-```
 └── 📁client
-    └── 📁node_modules
     └── 📁public
         └── vite.svg
     └── 📁src
-        └── App.jsx
+        └── 📁app
+            └── App.jsx
+            └── store.js
         └── 📁assets
             └── react.svg
         └── 📁components
+            └── CameraCapture.jsx
             └── Navbar.jsx
-        └── 📁context
-            └── AuthContext.js
-        └── index.css
-        └── main.jsx
+        └── 📁features
+            └── 📁auth
+                └── authSlice.js  # New file for auth logic
+                └── authAPI.js    # New file for API requests related to auth
+            └── 📁attendance
+                └── attendanceSlice.js
         └── 📁pages
             └── Dashboard.jsx
             └── Login.jsx
+            └── punchPage.jsx
             └── Register.jsx
         └── 📁utils
             └── api.js
+        └── index.css
+        └── main.jsx
     └── .gitignore
     └── eslint.config.js
     └── index.html
@@ -26,4 +32,3 @@
     └── package.json
     └── README.md
     └── vite.config.js
-```

@@ -1,30 +1,26 @@
-import { useContext, useState } from 'react';
+// src/pages/Login.jsx
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../features/auth/authSlice'; // Import loginUser thunk
 import { useNavigate } from 'react-router-dom';
-import AuthContext from '../context/AuthContext';
 
 const Login = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loginUser } = useContext(AuthContext);
-
   const [formData, setFormData] = useState({ email: 'subhankar19@gmail.com', password: 'Papun@123' });
 
-  const handleChange = e => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  const handleChange = (e) => setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    await loginUser(formData.email, formData.password);
+    await dispatch(loginUser(formData.email, formData.password));  // Dispatch the loginUser thunk
     navigate('/dashboard');
   };
 
   return (
-    // your JSX here (same as before)
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-lg shadow-md w-full max-w-md space-y-4"
-      >
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md w-full max-w-md space-y-4">
         <h2 className="text-2xl font-bold text-center">Login</h2>
-
         <input
           type="email"
           name="email"
@@ -43,7 +39,6 @@ const Login = () => {
           className="input"
           required
         />
-
         <button type="submit" className="btn">
           Login
         </button>

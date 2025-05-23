@@ -1,8 +1,8 @@
-import { useContext } from 'react';
-import AuthContext from '../context/AuthContext';
+// src/pages/Dashboard.jsx
+import { useSelector } from 'react-redux';  // Use useSelector to access Redux store
 
 export default function Dashboard() {
-  const { user, loading } = useContext(AuthContext);
+  const { user, loading } = useSelector((state) => state.auth);
 
   if (loading) {
     return <div className="text-center mt-10">Loading your dashboard...</div>;
