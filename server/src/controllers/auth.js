@@ -1,4 +1,4 @@
-import User from '../models/User.js';
+import User from "../models/User.js"
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
@@ -50,31 +50,29 @@ export const register = async (req, res) => {
   }
 };
 
+
+
 // Login user
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Basic validation
     if (!email || !password) {
       return res.status(400).json({ msg: 'Please enter email and password' });
     }
 
-    // Find user
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(401).json({ msg: 'Invalid credentials' });
     }
 
-    // Check password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ msg: 'Invalid credentials' });
     }
 
-    // Create JWT payload with user info
     const payload = {
-      userId: user._id,
+      userId: user._id, // Make sure user._id is included in the token payload
       role: user.role,
       name: user.name,
       age: user.age,
@@ -82,12 +80,12 @@ export const login = async (req, res) => {
 
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' });
 
-    res.json( { msg: 'Login successful',token, user });
-
+    res.json({ msg: 'Login successful', token, user });
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: 'Server error' });
   }
 };
+
 
 
