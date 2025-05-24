@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
   age: {
     type: Number,
     required: true,
-    min: 18, // optional: enforce minimum age
+    min: 18,
   },
   gender: {
     type: String,
@@ -32,9 +32,12 @@ const userSchema = new mongoose.Schema({
     enum: ["admin", "employee"],
     default: "employee",
   },
+  profileUrl: {
+    type: String,
+    default: "https://files.slack.com/files-pri/T08J90YLEQK-F08TM5S4S2F/png_new.png", // default avatar
+  },
 }, {
   timestamps: true,
 });
-
 const User = mongoose.model("User", userSchema);
 export default User;

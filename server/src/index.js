@@ -5,6 +5,7 @@ import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoute.js";
 import attendanceRoutes from './routes/attendanceRoute.js';
 import cors from "cors";
+import { startAutoPunchOutJob } from "./jobs/autoPunchOut.js";
 
 dotenv.config();
 const app = express();
@@ -12,10 +13,11 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:5173', // Allow the frontend's URL (update if necessary)
-  methods: ['GET', 'POST'],
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], // ✅ Allow PUT
   credentials: true
 }));
+
 
 // Increase the body size limit for parsing large JSON payloads (e.g., Base64 image strings)
 app.use(express.json({ limit: '50mb' })); // Increase this limit if needed
@@ -23,10 +25,12 @@ app.use(express.urlencoded({ limit: '50mb', extended: true })); // If you're als
 
 // Connect DB
 connectDB();
+//autoPunchOut at 11pm 
+startAutoPunchOutJob();
 
 // Routes
 app.use("/api/auth", authRoutes);
-app.use('/api', userRoutes);
+app.use('/api/users', userRoutes);
 app.use('/api/attendance', attendanceRoutes);
 
 // Root route
