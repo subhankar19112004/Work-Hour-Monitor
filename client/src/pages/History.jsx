@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAttendanceHistory } from '../features/attendance/attendanceSlice';
+import { Link } from 'react-router-dom';
 
 const History = () => {
   const dispatch = useDispatch();
@@ -13,6 +14,7 @@ const History = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6">
+    <span className='absolute top-30 left-4 border-2 rounded-full border-transparent bg-black '><Link className='h-10 w-10 p-2 py-10' to="/dashboard">⬅️</Link></span>
       <h1 className="text-2xl font-bold mb-4">📅 Attendance History</h1>
 
       {loading ? (

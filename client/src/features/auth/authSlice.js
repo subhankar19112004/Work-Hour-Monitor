@@ -1,5 +1,7 @@
+// src/features/auth/authSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../utils/api';
+import setAuthToken from '../../utils/setAuthToken';
 
 // Register user
 export const registerUser = createAsyncThunk(
@@ -20,7 +22,13 @@ export const loginUser = createAsyncThunk(
   async (credentials, { rejectWithValue }) => {
     try {
       const res = await axios.post('/auth/login', credentials);
-      return res.data;
+      const { token, user } = res.data;
+
+      // Save token to localStorage
+      localStorage.setItem('token', token);
+      setAuthToken(token);
+
+      return { token, user };
     } catch (err) {
       return rejectWithValue(err.response?.data?.msg || 'Login failed');
     }
@@ -33,9 +41,8 @@ export const fetchUserProfile = createAsyncThunk(
   async (_, { getState, rejectWithValue }) => {
     try {
       const token = getState().auth.token;
-      const res = await axios.get('/users/me', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      setAuthToken(token); // Set header before call
+      const res = await axios.get('/users/me');
       return res.data;
     } catch (err) {
       return rejectWithValue(err.response?.data?.msg || 'Failed to fetch profile');
@@ -43,15 +50,14 @@ export const fetchUserProfile = createAsyncThunk(
   }
 );
 
-// Update user profile (profileUrl, age, gender)
+// Update user profile
 export const updateUserProfile = createAsyncThunk(
   'auth/updateUser',
   async (updatedData, { getState, rejectWithValue }) => {
     try {
       const token = getState().auth.token;
-      const res = await axios.put('/users/me', updatedData, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      setAuthToken(token);
+      const res = await axios.put('/users/me', updatedData);
       return res.data.user;
     } catch (err) {
       return rejectWithValue(err.response?.data?.msg || 'Failed to update profile');
@@ -73,11 +79,16 @@ const authSlice = createSlice({
     logout(state) {
       state.user = null;
       state.token = null;
+      localStorage.removeItem('token');
+      setAuthToken(null);
+    },
+    setToken(state, action) {
+      state.token = action.payload;
+      setAuthToken(action.payload);
     },
   },
   extraReducers: (builder) => {
     builder
-      // Register
       .addCase(registerUser.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -91,7 +102,6 @@ const authSlice = createSlice({
         state.error = action.payload;
       })
 
-      // Login
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -106,7 +116,6 @@ const authSlice = createSlice({
         state.error = action.payload;
       })
 
-      // Get profile
       .addCase(fetchUserProfile.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -120,12 +129,11 @@ const authSlice = createSlice({
         state.error = action.payload;
       })
 
-      // Update profile
       .addCase(updateUserProfile.fulfilled, (state, action) => {
         state.user = action.payload;
       });
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, setToken } = authSlice.actions;
 export default authSlice.reducer;

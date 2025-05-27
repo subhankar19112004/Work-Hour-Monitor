@@ -1,20 +1,33 @@
 // src/pages/Login.jsx
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { loginUser } from '../features/auth/authSlice'; // Import loginUser thunk
+import { loginUser } from '../features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ email: 'subhankar19@gmail.com', password: 'Papun@123' });
+  const [formData, setFormData] = useState({
+    email: 'subhankar19@gmail.com',
+    password: 'Papun@123',
+  });
 
-  const handleChange = (e) => setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await dispatch(loginUser(formData.email, formData.password));  // Dispatch the loginUser thunk
-    navigate('/dashboard');
+    const result = await dispatch(loginUser(formData));
+
+    if (loginUser.fulfilled.match(result)) {
+      navigate('/dashboard');
+    } else {
+      alert('Login failed: ' + result.payload);
+    }
   };
 
   return (
