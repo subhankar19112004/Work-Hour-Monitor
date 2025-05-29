@@ -80,3 +80,14 @@ export const getUserAttendanceHistory = async (req, res) => {
     res.status(500).json({ msg: "Failed to fetch attendance history" });
   }
 };
+
+// controllers/attendance.js
+export const getAllUsersAttendance = async (req, res) => {
+  try {
+    const allAttendance = await Attendance.find().populate('user', 'name email role');
+    res.status(200).json(allAttendance);
+  } catch (error) {
+    res.status(500).json({ msg: 'Server error' });
+  }
+};
+
