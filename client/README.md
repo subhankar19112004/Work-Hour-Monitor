@@ -1,30 +1,48 @@
+```
 └── 📁client
     └── 📁public
         └── vite.svg
     └── 📁src
         └── 📁app
-            └── App.jsx
+        └── App.jsx
             └── store.js
         └── 📁assets
             └── react.svg
         └── 📁components
-            └── CameraCapture.jsx
-            └── Navbar.jsx
+            └── 📁admin
+                └── ActivityFeed.jsx
+                └── AdminHeader.jsx
+                └── EditEmployeeModal.jsx
+                └── EmployeeTable.jsx
+                └── SummaryCard.jsx
+            └── 📁common
+                └── CameraCapture.jsx
+                └── Layout.jsx
+                └── Navbar.jsx
+                └── PrivateRoute.jsx
+            └── 📁employee
         └── 📁features
-            └── 📁auth
-                └── authSlice.js  # New file for auth logic
-                └── authAPI.js    # New file for API requests related to auth
             └── 📁attendance
                 └── attendanceSlice.js
-        └── 📁pages
-            └── Dashboard.jsx
-            └── Login.jsx
-            └── punchPage.jsx
-            └── Register.jsx
-        └── 📁utils
-            └── api.js
+            └── 📁auth
+                └── authAPI.js
+                └── authSlice.js
         └── index.css
         └── main.jsx
+        └── 📁pages
+            └── 📁admin
+                └── Dashboard.jsx
+            └── 📁auth
+                └── Login.jsx
+                └── Register.jsx
+            └── 📁employee
+                └── Dashboard.jsx
+                └── History.jsx
+                └── punchPage.jsx
+        └── 📁utils
+            └── api.js
+            └── setAuthToken.js
+            └── useInterval.js
     └── .gitignore
     └── eslint.config.js
     └── index.html
@@ -32,3 +50,4 @@
     └── package.json
     └── README.md
     └── vite.config.js
+```

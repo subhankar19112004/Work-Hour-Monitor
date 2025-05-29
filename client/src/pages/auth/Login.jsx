@@ -66,7 +66,7 @@
 // src/pages/Login.jsx
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { loginUser } from '../features/auth/authSlice';
+import { loginUser } from '../../features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {

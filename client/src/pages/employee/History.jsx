@@ -1,7 +1,7 @@
 // src/pages/History.jsx
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAttendanceHistory } from '../features/attendance/attendanceSlice';
+import { fetchAttendanceHistory } from '../../features/attendance/attendanceSlice';
 import { Link } from 'react-router-dom';
 
 const History = () => {

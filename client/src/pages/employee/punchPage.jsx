@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import axios from '../utils/api';
+import axios from '../../utils/api';
 import { useSelector } from 'react-redux';
-import CameraCapture from '../components/CameraCapture';
+import CameraCapture from '../../components/common/CameraCapture';
 import { useNavigate } from 'react-router-dom';
 
 const PunchPage = () => {

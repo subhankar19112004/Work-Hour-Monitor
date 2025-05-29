@@ -5,9 +5,9 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { FiEdit2, FiX } from "react-icons/fi";
-import { fetchTodayAttendance } from "../features/attendance/attendanceSlice";
-import { updateUserProfile } from "../features/auth/authSlice";
-import { useInterval } from "../utils/useInterval";
+import { fetchTodayAttendance } from "../../features/attendance/attendanceSlice";
+import { updateUserProfile } from "../../features/auth/authSlice";
+import { useInterval } from "../../utils/useInterval";
 
 export default function Dashboard() {
   const dispatch = useDispatch();

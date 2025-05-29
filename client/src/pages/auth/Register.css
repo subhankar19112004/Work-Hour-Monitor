@@ -1,0 +1,34 @@
+/* Register.css */
+.input-field {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  transition: all 0.3s ease;
+}
+
+.input-field:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.5);
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #4f46e5;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #6366f1;
+}
+
+.bg-gradient {
+  background: linear-gradient(45deg, #4f46e5, #6366f1);
+  transition: background-color 0.3s ease;
+}

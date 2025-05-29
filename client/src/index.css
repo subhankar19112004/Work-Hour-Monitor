@@ -22,3 +22,7 @@
 .animate-fadeIn {
   animation: fadeIn 0.25s ease-out;
 }
+
+body {
+  @apply font-sans bg-gray-100;
+}

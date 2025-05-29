@@ -1,4 +1,5 @@
 import User from '../models/User.js';
+import asyncHandler from 'express-async-handler';
 
 // Get all users — admin only
 export const getAllUsers = async (req, res) => {
@@ -51,3 +52,21 @@ export const updateUserRole = async (req, res) => {
     res.status(500).json({ msg: 'Server error' });
   }
 };
+
+// In controllers/userController.js
+export const updateUserByAdmin = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (!user) {
+    res.status(404);
+    throw new Error('User not found');
+  }
+
+  user.name = req.body.name || user.name;
+  user.email = req.body.email || user.email;
+  user.role = req.body.role || user.role;
+  user.isActive = req.body.isActive ?? user.isActive;
+
+  const updatedUser = await user.save();
+  res.json(updatedUser);
+});
+
