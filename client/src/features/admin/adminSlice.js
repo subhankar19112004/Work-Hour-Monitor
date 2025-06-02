@@ -1,4 +1,3 @@
-// src/features/admin/adminSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../utils/api';
 import setAuthToken from '../../utils/setAuthToken';
