@@ -1,14 +1,11 @@
-// src/components/EmployeeTable.jsx
+// src/components/admin/EmployeeTable.jsx
+
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import {
-  updateUserRole,
-  deleteUser,
-  updateUserProfile,
-} from '../../features/admin/adminSlice.js';
+import { updateUserRole, deleteUser } from '../../features/admin/adminSlice';
 import { motion } from 'framer-motion';
 
-export default function EmployeeTable({ employees }) {
+const EmployeeTable = ({ employees }) => {
   const dispatch = useDispatch();
 
   return (
@@ -23,7 +20,7 @@ export default function EmployeeTable({ employees }) {
         </tr>
       </thead>
       <tbody>
-        {employees.map(emp => (
+        {employees.map((emp) => (
           <motion.tr
             key={emp._id}
             initial={{ opacity: 0, y: 10 }}
@@ -43,7 +40,8 @@ export default function EmployeeTable({ employees }) {
               </select>
             </td>
             <td className="p-2">
-              {emp.isActive ? (
+              {/* Check the `status` field and display "Active" or "Inactive" */}
+              {emp.status === 'active' ? (
                 <span className="text-green-600">Active</span>
               ) : (
                 <span className="text-gray-400">Inactive</span>
@@ -51,7 +49,7 @@ export default function EmployeeTable({ employees }) {
             </td>
             <td className="p-2 space-x-2">
               <button
-                onClick={() => dispatch(updateUserProfile({ userId: emp._id, userData: { name: emp.name } }))}
+                onClick={() => dispatch(updateUserRole({ userId: emp._id, role: emp.role }))}
                 className="px-2 py-1 bg-blue-500 text-white rounded"
               >
                 Update
@@ -68,4 +66,6 @@ export default function EmployeeTable({ employees }) {
       </tbody>
     </table>
   );
-}
+};
+
+export default EmployeeTable;

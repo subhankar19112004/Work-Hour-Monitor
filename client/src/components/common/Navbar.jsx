@@ -44,7 +44,7 @@ const Navbar = () => {
   return (
     <nav className="bg-gray-800 text-white p-4 flex justify-between items-center relative">
       <Link to="/dashboard" className="font-bold text-xl">
-        Work Hour Monitor
+        Work Hour Monitor 🕛
       </Link>
 
       <div className="relative" ref={dropdownRef}>
@@ -78,19 +78,31 @@ const Navbar = () => {
               Dashboard
             </Link>
             <Link
-              to="/premium"
+              to="/leave-request"
               className="block px-4 py-2 hover:bg-gray-200"
               onClick={() => setDropdownOpen(false)}
             >
-              Premium
+              Apply for Leave
             </Link>
-            <Link
-              to="/admin"
-              className="block px-4 py-2 hover:bg-gray-200"
-              onClick={() => setDropdownOpen(false)}
-            >
-              Login as Admin
-            </Link>
+            {user?.role === 'admin' && (
+              <Link
+                to="/admin/leave-requests"
+                className="block px-4 py-2 hover:bg-gray-200"
+                onClick={() => setDropdownOpen(false)}
+              >
+                Manage Leave Requests
+              </Link>
+            )}
+
+            {user?.role === 'admin' && (
+              <Link
+                to="/admin-control"
+                className="block px-4 py-2 hover:bg-gray-200"
+                onClick={() => setDropdownOpen(false)}
+              >
+                Manage Employees
+              </Link>
+            )}
             <button
               onClick={handleLogout}
               className="w-full text-left px-4 py-2 hover:bg-red-500 hover:text-white text-red-600 font-semibold"

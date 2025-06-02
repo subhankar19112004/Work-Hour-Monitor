@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react';
 import axios from '../../utils/api';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import CameraCapture from '../../components/common/CameraCapture';
 import { useNavigate } from 'react-router-dom';
+import { fetchUserProfile } from '../../features/auth/authSlice'; // Import action to fetch user profile
 
 const PunchPage = () => {
   const [status, setStatus] = useState(null); // "none", "punched-in", "punched-out"
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
-  const { token } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.auth); // Access token from redux state
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Fetch today's attendance
+  // Fetch today's attendance status
   useEffect(() => {
     const fetchStatus = async () => {
       try {
@@ -24,43 +26,51 @@ const PunchPage = () => {
         const data = res.data;
 
         if (!data.punchInTime) {
-          setStatus('none');
+          setStatus('none'); // User has not punched in yet
         } else if (data.punchInTime && !data.punchOutTime) {
-          setStatus('punched-in');
+          setStatus('punched-in'); // User has punched in but not out yet
         } else {
-          setStatus('punched-out');
+          setStatus('punched-out'); // User has punched out
         }
       } catch (err) {
         console.error('Status fetch failed', err);
-        setStatus('none');
+        setStatus('none'); // Default to 'none' if an error occurs
       } finally {
-        setLoading(false);
+        setLoading(false); // Set loading to false once fetch is complete
       }
     };
 
     fetchStatus();
-  }, [token]);
+  }, [token]); // Add token as dependency so that status is fetched again when the token changes
 
-  const handleCapture = async (photoData) => {
-    try {
-      let endpoint = status === 'none' ? '/attendance/punch-in' : '/attendance/punch-out';
+  // Handle camera capture and perform punch-in or punch-out action
+const handleCapture = async (photoData) => {
+  try {
+    let endpoint = status === 'none' ? '/attendance/punch-in' : '/attendance/punch-out';
 
-      const res = await axios.post(
-        endpoint,
-        { photo: photoData },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+    const res = await axios.post(
+      endpoint,
+      { photo: photoData },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
 
-      setMessage(res.data.message);
-      setTimeout(() => navigate('/dashboard'), 3000);
-    } catch (err) {
-      setMessage('Punch failed. Try again.');
-      console.error(err);
-    }
-  };
+    setMessage(res.data.message);
 
+    // After punch-in or punch-out, refresh the user profile
+    await dispatch(fetchUserProfile());  // This will update the `status` in Redux
+
+    setTimeout(() => navigate('/dashboard'), 3000);
+  } catch (err) {
+    setMessage('Punch failed. Try again.');
+    console.error(err);
+  }
+};
+
+
+  // Show loading state while checking the status
   if (loading) return <div className="text-center mt-10">Checking punch status...</div>;
 
+  // If the user has already punched in and out
   if (status === 'punched-out') {
     return <div className="text-center mt-10 text-green-600">✅ You already punched in and out today.</div>;
   }
@@ -71,9 +81,9 @@ const PunchPage = () => {
         {status === 'none' ? 'Punch In' : 'Punch Out'}
       </h1>
 
-      <CameraCapture onCapture={handleCapture} />
+      <CameraCapture onCapture={handleCapture} /> {/* CameraCapture component to capture image for punch-in/punch-out */}
 
-      {message && <p className="text-center mt-4 text-blue-600">{message}</p>}
+      {message && <p className="text-center mt-4 text-blue-600">{message}</p>} {/* Display the response message */}
     </div>
   );
 };

@@ -93,7 +93,7 @@ const Login = () => {
 
       // Store role-based redirection
       if (user.role === 'admin') {
-        navigate('/admin');
+        navigate('/admin-control');
       } else {
         navigate('/dashboard');
       }
