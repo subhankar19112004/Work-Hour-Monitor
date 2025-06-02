@@ -4,16 +4,18 @@ import { fetchUserProfile, setToken } from './features/auth/authSlice';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/common/Navbar';
 import PrivateRoute from './components/common/PrivateRoute';
+  // Admin route for protected pages
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import Dashboard from './pages/employee/Dashboard';
 import PunchPage from './pages/employee/punchPage';
 import History from './pages/employee/History';
+import LeaveRequestForm from './components/employee/LeaveRequestForm';  // Employee leave request form
+import AdminLeaveRequests from './components/admin/AdminLeaveRequests';  // Admin leave request management
 import AdminDashboard from './pages/admin/Dashboard';
-import AdminRoute from './components/common/AdminRote';
-
 import useInactivity from './utils/useInactivity'; // Import the inactivity hook
 import InactivityModal from './components/common/InactivityModal'; // Import the inactivity modal
+import AdminRoute from './components/common/AdminRote';
 
 function App() {
   const dispatch = useDispatch();
@@ -72,7 +74,23 @@ function App() {
           }
         />
         <Route
-          path="/admin"
+          path="/leave-request"
+          element={
+            <PrivateRoute>
+              <LeaveRequestForm />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/admin/leave-requests"
+          element={
+            <AdminRoute>
+              <AdminLeaveRequests />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin-control"
           element={
             <AdminRoute>
               <AdminDashboard />
