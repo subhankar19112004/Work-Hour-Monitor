@@ -1,25 +1,31 @@
 import Attendance from "../models/Attendance.js";
+import User from "../models/User.js";
 
-// Punch In
+// Punch In function
 export const punchIn = async (req, res) => {
   try {
     const { photo } = req.body;
     if (!photo) return res.status(400).json({ message: "Photo is required for punch-in" });
 
     const userId = req.user.userId;
-    const today = new Date().toISOString().slice(0, 10);
+    const today = new Date().toISOString().slice(0, 10);  // Get today's date
 
+    // Check if the user has already punched in today
     const alreadyPunchedIn = await Attendance.findOne({ user: userId, date: today });
     if (alreadyPunchedIn) return res.status(400).json({ message: "Already punched in today" });
 
+    // Create the attendance record for the user
     const attendance = new Attendance({
       user: userId,
       date: today,
-      punchInTime: new Date(),
+      punchInTime: new Date(),  // Save current time as punch-in time
       punchInPhoto: photo,
     });
 
-    await attendance.save();
+    await attendance.save();  // Save the attendance record
+
+    // Update the user's status to active after successful punch-in
+    await User.findByIdAndUpdate(userId, { status: 'active' });
 
     res.status(201).json({
       message: "Punched in successfully",
@@ -32,7 +38,8 @@ export const punchIn = async (req, res) => {
   }
 };
 
-// Punch Out
+
+// Punch Out function
 export const punchOut = async (req, res) => {
   try {
     const { photo } = req.body;
@@ -43,6 +50,7 @@ export const punchOut = async (req, res) => {
     if (!attendance) return res.status(404).json({ message: "No punch-in record found for today" });
     if (attendance.punchOutTime) return res.status(400).json({ message: "Already punched out today" });
 
+    // Set the punch-out time and update the status to 'inactive'
     attendance.punchOutTime = new Date();
     attendance.punchOutPhoto = photo;
 
@@ -53,6 +61,9 @@ export const punchOut = async (req, res) => {
     const totalHours = Math.floor(diff / (1000 * 60 * 60));
     const totalMinutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     attendance.totalWorkTime = `${totalHours} hours ${totalMinutes} minutes`;
+
+    // Update user's status to 'inactive' once they punch out
+    await User.findByIdAndUpdate(userId, { status: 'inactive' });
 
     await attendance.save();
 
@@ -90,4 +101,5 @@ export const getAllUsersAttendance = async (req, res) => {
     res.status(500).json({ msg: 'Server error' });
   }
 };
+
 

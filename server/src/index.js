@@ -6,6 +6,7 @@ import userRoutes from "./routes/userRoute.js";
 import attendanceRoutes from './routes/attendanceRoute.js';
 import cors from "cors";
 import { startAutoPunchOutJob } from "./jobs/autoPunchOut.js";
+import leaveRoutes from './routes/leaveRoutes.js';
 
 dotenv.config();
 const app = express();
@@ -32,6 +33,7 @@ startAutoPunchOutJob();
 app.use("/api/auth", authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/attendance', attendanceRoutes);
+app.use('/api/leave', leaveRoutes);
 
 // Root route
 app.get("/", (req, res) => {

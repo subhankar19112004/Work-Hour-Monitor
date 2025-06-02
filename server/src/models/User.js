@@ -27,6 +27,11 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 6,
   },
+  status: { // Add this field for active/inactive status
+    type: String,
+    enum: ["active", "inactive"],
+    default: "inactive", // Default value
+  },
   role: {
     type: String,
     enum: ["admin", "employee"],
