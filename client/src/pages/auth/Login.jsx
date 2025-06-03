@@ -67,7 +67,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../features/auth/authSlice';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -134,6 +134,9 @@ const Login = () => {
           Login
         </button>
       </form>
+      <div className="text-center mt-4">
+        <p className="text-gray-600 mt-80 -ml-96">Don't have an account? <Link to={'/register'} className="text-blue-600 hover:underline">Register</Link></p>
+      </div>
     </div>
   );
 };

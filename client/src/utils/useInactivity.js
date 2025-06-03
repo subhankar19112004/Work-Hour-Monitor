@@ -1,46 +1,9 @@
-// import { useState, useEffect } from 'react';
 
-// const useInactivity = (timeout = 10000) => {
-//   const [isInactive, setIsInactive] = useState(false);
-//   const [lastActiveTime, setLastActiveTime] = useState(Date.now());
-
-//   useEffect(() => {
-//     const activityHandler = () => {
-//       console.log('User is active'); // Debug log to see if activity is detected
-//       setLastActiveTime(Date.now());
-//       if (isInactive) {
-//         setIsInactive(false);  // Reset inactivity if user interacts
-//       }
-//     };
-
-//     document.addEventListener('mousemove', activityHandler);
-//     document.addEventListener('keydown', activityHandler);
-//     document.addEventListener('click', activityHandler);
-
-//     const checkInactivity = setInterval(() => {
-//       if (Date.now() - lastActiveTime > timeout) {
-//         console.log('User is inactive'); // Debug log for inactivity detection
-//         setIsInactive(true);
-//       }
-//     }, 1000);
-
-//     return () => {
-//       clearInterval(checkInactivity);
-//       document.removeEventListener('mousemove', activityHandler);
-//       document.removeEventListener('keydown', activityHandler);
-//       document.removeEventListener('click', activityHandler);
-//     };
-//   }, [lastActiveTime, isInactive, timeout]);
-
-//   return isInactive;
-// };
-
-// export default useInactivity;
 
 
 import { useState, useEffect } from 'react';
 
-const useInactivity = (timeout = 5 * 60 * 1000) => {
+const useInactivity = (timeout =  5 * 60 * 1000) => {
   const [isInactive, setIsInactive] = useState(false);
   const [lastActiveTime, setLastActiveTime] = useState(Date.now());
 

@@ -1,12 +1,26 @@
-// src/components/admin/EmployeeTable.jsx
-
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateUserRole, deleteUser } from '../../features/admin/adminSlice';
 import { motion } from 'framer-motion';
 
 const EmployeeTable = ({ employees }) => {
   const dispatch = useDispatch();
+
+  const [selectedRole, setSelectedRole] = useState({});  // Track role changes
+
+  const handleRoleChange = (empId, role) => {
+    setSelectedRole((prevState) => ({
+      ...prevState,
+      [empId]: role,  // Store the new role for each employee
+    }));
+  };
+
+  const handleUpdateRole = (empId, currentRole) => {
+    // Only dispatch if role has changed
+    if (selectedRole[empId] !== currentRole) {
+      dispatch(updateUserRole({ userId: empId, role: selectedRole[empId] }));
+    }
+  };
 
   return (
     <table className="w-full text-left border-collapse text-sm">
@@ -31,8 +45,8 @@ const EmployeeTable = ({ employees }) => {
             <td className="p-2">{emp.email}</td>
             <td className="p-2">
               <select
-                value={emp.role}
-                onChange={(e) => dispatch(updateUserRole({ userId: emp._id, role: e.target.value }))}
+                value={selectedRole[emp._id] || emp.role}  // Use selected role or current role
+                onChange={(e) => handleRoleChange(emp._id, e.target.value)}  // Track new role
                 className="p-1 border rounded"
               >
                 <option value="admin">Admin</option>
@@ -49,7 +63,7 @@ const EmployeeTable = ({ employees }) => {
             </td>
             <td className="p-2 space-x-2">
               <button
-                onClick={() => dispatch(updateUserRole({ userId: emp._id, role: emp.role }))}
+                onClick={() => handleUpdateRole(emp._id, emp.role)}  // Dispatch only if role changes
                 className="px-2 py-1 bg-blue-500 text-white rounded"
               >
                 Update

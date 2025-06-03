@@ -46,7 +46,13 @@ const Navbar = () => {
       <Link to="/dashboard" className="font-bold text-xl">
         Work Hour Monitor 🕛
       </Link>
-
+      {user?.role === 'admin' && (
+        <div className="flex space-x-4">
+          <Link to="/admin/snapshots" className="text-white hover:bg-gray-500 mt-1 border rounded-lg p-1 bg-gray-600">
+            <button>Snapshots</button>
+          </Link>
+        </div>
+      )}
       <div className="relative" ref={dropdownRef}>
         <button
           onClick={() => setDropdownOpen(prev => !prev)}
@@ -93,7 +99,6 @@ const Navbar = () => {
                 Manage Leave Requests
               </Link>
             )}
-
             {user?.role === 'admin' && (
               <Link
                 to="/admin-control"

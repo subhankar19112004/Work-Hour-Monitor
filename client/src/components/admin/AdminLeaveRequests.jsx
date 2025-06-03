@@ -47,11 +47,11 @@ const AdminLeaveRequests = () => {
           ) : (
             leaveRequests.map((request) => (
               <tr key={request._id}>
-                <td className="p-4">{request.user.name}</td>
-                <td className="p-4">{new Date(request.startDate).toLocaleDateString()}</td>
-                <td className="p-4">{new Date(request.endDate).toLocaleDateString()}</td>
-                <td className="p-4">{request.reason}</td>
-                <td className="p-4">{request.status}</td>
+                <td className="p-4">{request.user?.name}</td>
+                <td className="p-4">{new Date(request?.startDate).toLocaleDateString()}</td>
+                <td className="p-4">{new Date(request?.endDate).toLocaleDateString()}</td>
+                <td className="p-4">{request?.reason}</td>
+                <td className="p-4">{request?.status}</td>
                 <td className="p-4">
                   {request.status === 'pending' && (
                     <>
